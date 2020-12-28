@@ -20,7 +20,7 @@ module.exports.loop = function () {
     console.log('Harvesters: ' + harvesters.length);
     var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
     console.log('Builders: ' + builders.length);
-    var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgraders');
+    var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     console.log('Upgraders: ' + upgraders.length);
     
     if(harvesters.length < 2) {
