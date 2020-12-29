@@ -23,26 +23,26 @@ module.exports.loop = function () {
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     console.log('Upgraders: ' + upgraders.length);
     
-    if(harvesters.length < 2) {
-        var newName = 'Harvester' + Game.time;
-        console.log('Spawning new harvester: ' + newName);
-        Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE,MOVE], newName,
-            {memory: {role: 'harvester'}});
-    }
-    
-    if(harvesters.length > 1 && builders.length < 1) {
-        var newName = 'Builder' + Game.time;
-        console.log('Spawning new builder: ' + newName);
-        Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE], newName,
-            {memory: {role: 'builder'}});
-    }
-    
-    if(harvesters.length > 1 && builders.length > 0 && upgraders.length < 1) {
-        var newName = 'Upgrader' + Game.time;
-        console.log('Spawning new upgrader: ' + newName);
-        Game.spawns['Spawn1'].spawnCreep([WORK,CARRY,MOVE], newName,
-            {memory: {role: 'upgrader'}});
-    }
+        if(harvesters.length < 1 || harvesters.length < builders.length || harvesters.length < upgraders.length) {
+            var newName = 'Harvester' + Game.time;
+            console.log('Spawning new harvester: ' + newName);
+            Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY,MOVE], newName,
+                {memory: {role: 'harvester'}});
+        }
+        
+        if(harvesters.length > builders.length || upgraders.length > builders.length) {
+            var newName = 'Builder' + Game.time;
+            console.log('Spawning new builder: ' + newName);
+            Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY,MOVE], newName,
+                {memory: {role: 'builder'}});
+        }
+        
+        if(builders.length > upgraders.length) {
+            var newName = 'Upgrader' + Game.time;
+            console.log('Spawning new upgrader: ' + newName);
+            Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY,MOVE], newName,
+                {memory: {role: 'upgrader'}});
+        }
     
      if(Game.spawns['Spawn1'].spawning) {
         var spawningCreep = Game.creeps[Game.spawns['Spawn1'].spawning.name];
@@ -67,6 +67,9 @@ module.exports.loop = function () {
             tower.attack(closestHostile);
         }
     }
+    
+    var road = Game.getObjectById('ROAD_ID');
+    
 
     for(var name in Game.creeps) {
         var creep = Game.creeps[name];
